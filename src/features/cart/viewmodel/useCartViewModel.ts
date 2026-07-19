@@ -1,7 +1,8 @@
 // features/cart/viewmodel/useCartViewModel.ts
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { router } from 'expo-router';
 import { navigateTo } from '../../../services/navigation';
+import { useCart } from '../../../services/CartContext';
 
 export interface CartItem {
   id: string;
@@ -13,12 +14,6 @@ export interface CartItem {
   farmer: string;
   category: string;
 }
-
-// Mock cart data (TODO: replace with cart context/state management)
-const MOCK_CART: CartItem[] = [
-  { id: 'c1', productId: 'p1', name: 'Organic Sukuma Wiki', price: 2500, unit: 'bunch', quantity: 2, farmer: 'Mama Mboga Farm', category: 'vegetables' },
-  { id: 'c2', productId: 'p3', name: 'Ripe Avocados', price: 3000, unit: 'each', quantity: 3, farmer: 'Kayunga Organics', category: 'fruits' },
-];
 
 export interface UseCartViewModelReturn {
   items: CartItem[];
@@ -33,21 +28,22 @@ export interface UseCartViewModelReturn {
 }
 
 export function useCartViewModel(): UseCartViewModelReturn {
-  const [items, setItems] = useState<CartItem[]>(MOCK_CART);
-  const [isLoading] = useState(false);
+  const {
+    items,
+    updateQuantity,
+    removeItem,
+    subtotal,
+    deliveryFee,
+    total,
+  } = useCart();
 
   const onUpdateQuantity = useCallback((itemId: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  }, []);
+    updateQuantity(itemId, newQuantity);
+  }, [updateQuantity]);
 
   const onRemoveItem = useCallback((itemId: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== itemId));
-  }, []);
+    removeItem(itemId);
+  }, [removeItem]);
 
   const onCheckout = useCallback(() => {
     navigateTo('/checkout');
@@ -57,17 +53,9 @@ export function useCartViewModel(): UseCartViewModelReturn {
     router.push('/(tabs)/discover');
   }, []);
 
-  const subtotal = useMemo(
-    () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [items]
-  );
-
-  const deliveryFee = subtotal >= 30000 ? 0 : 5000;
-  const total = subtotal + deliveryFee;
-
   return {
     items,
-    isLoading,
+    isLoading: false,
     onUpdateQuantity,
     onRemoveItem,
     onCheckout,

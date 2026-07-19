@@ -14,6 +14,7 @@ const CATEGORIES: Category[] = [
   { id: 'dairy_eggs', label: 'Dairy & Eggs', icon: '🥚' },
   { id: 'grains', label: 'Grains', icon: '🌾' },
   { id: 'fish_meat', label: 'Fish & Meat', icon: '🐟' },
+  { id: 'herbs', label: 'Herbs & Spices', icon: '🌿' },
 ];
 
 const DEFAULT_SELECTED = ['vegetables'];

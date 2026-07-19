@@ -2,6 +2,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { router } from 'expo-router';
 import { navigateTo } from '../../../services/navigation';
+import { useCart } from '../../../services/CartContext';
 
 export interface CheckoutItem {
   id: string;
@@ -25,11 +26,6 @@ export interface PaymentMethod {
   icon: string;
   description: string;
 }
-
-const MOCK_ITEMS: CheckoutItem[] = [
-  { id: 'c1', name: 'Organic Sukuma Wiki', price: 2500, unit: 'bunch', quantity: 2, farmer: 'Mama Mboga Farm', category: 'vegetables' },
-  { id: 'c2', name: 'Ripe Avocados', price: 3000, unit: 'each', quantity: 3, farmer: 'Kayunga Organics', category: 'fruits' },
-];
 
 const MOCK_ADDRESS: DeliveryAddress = {
   label: 'Home',
@@ -64,6 +60,8 @@ export function useCheckoutViewModel(): UseCheckoutViewModelReturn {
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
+  const { items, subtotal, deliveryFee, total, clearCart } = useCart();
+
   const onSelectPayment = useCallback((id: string) => {
     setSelectedPaymentId(id);
   }, []);
@@ -77,26 +75,19 @@ export function useCheckoutViewModel(): UseCheckoutViewModelReturn {
     try {
       // TODO: replace with real API call to POST /orders
       await new Promise((resolve) => setTimeout(resolve, 1500));
+      clearCart();
       navigateTo('/orders/confirmation');
     } finally {
       setIsPlacingOrder(false);
     }
-  }, []);
+  }, [clearCart]);
 
   const onBack = useCallback(() => {
     router.back();
   }, []);
 
-  const subtotal = useMemo(
-    () => MOCK_ITEMS.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    []
-  );
-
-  const deliveryFee = subtotal >= 30000 ? 0 : 5000;
-  const total = subtotal + deliveryFee;
-
   return {
-    items: MOCK_ITEMS,
+    items,
     deliveryAddress: MOCK_ADDRESS,
     paymentMethods: PAYMENT_METHODS,
     selectedPaymentId,

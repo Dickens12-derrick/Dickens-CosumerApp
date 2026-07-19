@@ -11,7 +11,7 @@ interface ProductImageProps {
   name?: string;
   category?: string;
   height?: number;
-  width?: number;
+  width?: number | string;
   borderRadius?: number;
   containerStyle?: ViewStyle;
 }

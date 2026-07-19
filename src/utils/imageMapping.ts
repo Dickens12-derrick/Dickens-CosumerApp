@@ -14,64 +14,63 @@ export const categoryIconMap: { [key: string]: any } = {
   legumes: require('../../assets/images/beans2.jpg'),
 };
 
-
-
 // UI icon images — using available product/photo assets as visual representations
-// E-Katale logo is only used on the home page; all other icons use distinct product images
 export const uiIconMap: { [key: string]: any } = {
   // Tab icons — dedicated tab icon assets
-  home: require('../../assets/images/tabIcons/home.png'),
-  search: require('../../assets/images/tabIcons/explore.png'),
-  explore: require('../../assets/images/tabIcons/explore.png'),
-  discover: require('../../assets/images/tabIcons/explore.png'),
-  cart: require('../../assets/images/tabIcons/explore.png'),
-  profile: require('../../assets/images/tabIcons/explore.png'),
+  home: require('@/assets/images/tabIcons/home-button.png'),
+  search: require('../../assets/images/tabIcons/search.png'),
+  // explore: require('../../assets/images/tabIcons/receive-email.png'),
+  discover: require('@/assets/images/tabIcons/discover1.png'),
+  cart: require('../../assets/images/tabIcons/carts.png'),
+  profile: require('@/assets/images/tabIcons/profile.png'),
 
   // Onboarding / auth
   leaf: require('../../assets/images/e katale logo.jpg'),
-  phone: require('../../assets/images/expo-logo.png'),
+  phone: require('../../assets/images/tabIcons/phone-call.png'),
   lock: require('../../assets/images/egg2.jpg'),
-  message: require('../../assets/images/fish.jpg'),
-  carrot: require('../../assets/images/cabbage1.jpg'),
+  message: require('@/assets/images/tabIcons/chat.png'),
+  Shop: require('../../assets/images/shopping-cart.png'),
 
   // Location
-  mapPin: require('@/assets/images/favicon.png'),
-  target: require('../../assets/images/icon.png'),
-  other: require('../../assets/images/images.jpeg'),
-  work: require('../../assets/images/favicon.png')
-  ,
+  mapPin: require('../../assets/images/tabIcons/map.png'),
+  target: require('../../assets/images/tabIcons/target.png'),
+  other: require('../../assets/images/tabIcons/ellipse.png'),
+  work: require('../../assets/images/tabIcons/working.png'),
+
   // Orders / Cart
-  package: require('../../assets/images/icon.png'),
+  package: require('../../assets/images/tabIcons/shopping.png'),
 
   // Payment
-  cash: require('../../assets/images/yellowmaize.jpg'),
-  card: require('../../assets/images/posho.jpeg'),
-  mobile_money: require('../../assets/images/groundnuts.jpeg'),
+  cash: require('../../assets/images/tabIcons/payment.png'),
+  card: require('../../assets/images/tabIcons/credit-card.png'),
+  mobile_money: require('../../assets/images/tabIcons/pay.png'),
 
   // Profile menu
-  orders: require('../../assets/images/favicon.png'),
-
-  // addresses: require('../../assets/images/map-related default'),
-  favorites: require('../../assets/images/mango.jpg'),
-  notifications: require('../../assets/images/fresh ginger.jpg'),
-  help: require('../../assets/images/sukuma.jpg'),
-  about: require('../../assets/images/sukumawiki.jpg'),
+  orders: require('../../assets/images/tabIcons/order-now.png'),
+  addresses: require('../../assets/images/tabIcons/delivery-address.png'),
+  favorites: require('../../assets/images/tabIcons/star.png'),
+  notifications: require('../../assets/images/tabIcons/bell.png'),
+  help: require('../../assets/images/tabIcons/help-desk.png'),
+  about: require('../../assets/images/tabIcons/person.png'),
 };
 
 export const productImageMap: { [key: string]: any } = {
   // Fruits
-  'Ripe Avocados': require('@/assets/images/avocado ready.jpg'),
+  'Ripe Avocados': require('../../assets/images/avocado ready.jpg'),
   'Fresh Mango': require('../../assets/images/mango.jpg'),
   'Mango': require('../../assets/images/mango.jpg'),
   'Yellow Banana': require('../../assets/images/banana.jpg'),
   'Fresh Bananas': require('../../assets/images/banana.jpg'),
   'Banana': require('../../assets/images/banana.jpg'),
+  'sweet Bananas': require('../../assets/images/banana.jpg'),
+  'Sweet Bananas': require('../../assets/images/banana.jpg'),
 
   // Vegetables
-  'Organic Sukuma Wiki': require('@/assets/images/sukuma.jpg'),
-  'Fresh Cabbage': require('@/assets/images/cabbage1.jpg'),
-  'Cabbage': require('@/assets/images/cabbage1.jpg'),
-  'Fresh Matoke': require('@/assets/images/matooke.jpg'),
+  'Organic Sukuma Wiki': require('../../assets/images/sukuma.jpg'),
+  'Fresh Cabbage': require('../../assets/images/cabbage1.jpg'),
+  'Cabbage': require('../../assets/images/cabbage1.jpg'),
+  'Fresh Matoke': require('../../assets/images/matooke.jpg'),
+  'Organic Tomatoes': require('../../assets/images/tomato.jpg'),
 
   // Legumes & Grains
   'Organic Beans': require('../../assets/images/beans2.jpg'),
@@ -79,17 +78,27 @@ export const productImageMap: { [key: string]: any } = {
   'Beans': require('../../assets/images/beans2.jpg'),
   'Dried Beans': require('../../assets/images/beans2.jpg'),
   'Black Beans': require('../../assets/images/beans2.jpg'),
+  'Groundnuts (1kg)': require('../../assets/images/groundnuts.jpeg'),
+  'Posho (Maize Flour)': require('../../assets/images/posho.jpeg'),
 
   // Dairy & Eggs
-  'Free-Range Eggs (tray)': require('@/assets/images/eggs1.jpg'),
+  'Free-Range Eggs (tray)': require('../../assets/images/eggs1.jpg'),
   'Fresh Eggs': require('../../assets/images/eggs1.jpg'),
   'Eggs': require('../../assets/images/eggs1.jpg'),
-  'Organic Eggs': require('@/assets/images/eggs1.jpg'),
+  'Organic Eggs': require('../../assets/images/eggs1.jpg'),
   'Farm Fresh Eggs': require('../../assets/images/eggs1.jpg'),
+  'Fresh Milk (1L)': require('../../assets/images/fresh milk.jpeg'),
+
+  // Fish & Meat
+  'Fresh Tilapia': require('../../assets/images/tilapiafish.jpeg'),
+  'Local Chicken': require('../../assets/images/localchicken.jpeg'),
+
+  // Herbs
+  'Fresh Ginger': require('../../assets/images/fresh ginger.jpg'),
 
   // Fallbacks by category
   'fruits': require('../../assets/images/mango.jpg'),
-  'vegetables': require('@/assets/images/sukuma.jpg'),
+  'vegetables': require('../../assets/images/sukuma.jpg'),
   'grains': require('../../assets/images/yellowmaize.jpg'),
   'dairy_eggs': require('../../assets/images/egg2.jpg'),
   'legumes': require('../../assets/images/beans2.jpg'),

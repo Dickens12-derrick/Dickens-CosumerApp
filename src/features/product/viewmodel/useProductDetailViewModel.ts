@@ -1,6 +1,7 @@
 // features/product/viewmodel/useProductDetailViewModel.ts
 import { useState, useCallback, useMemo } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useCart } from '../../../services/CartContext';
 
 export interface ProductDetail {
   id: string;
@@ -131,10 +132,21 @@ export function useProductDetailViewModel(): UseProductDetailViewModelReturn {
     setQuantity((prev) => Math.max(prev - 1, 1));
   }, []);
 
+  const { addItem } = useCart();
+
   const onAddToCart = useCallback(() => {
-    // TODO: dispatch to cart store/context
+    if (!product) return;
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      unit: product.unit,
+      quantity,
+      farmer: product.farmer,
+      category: product.category,
+    });
     router.back();
-  }, []);
+  }, [product, quantity, addItem]);
 
   const onBack = useCallback(() => {
     router.back();
