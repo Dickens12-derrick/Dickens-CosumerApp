@@ -1,6 +1,7 @@
 // features/onboarding/viewmodel/useSplashViewModel.ts
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type LanguageCode = 'EN' | 'LG' | 'SW';
 
@@ -14,31 +15,44 @@ export interface UseSplashViewModelReturn {
 }
 
 const LANGUAGES: LanguageCode[] = ['EN', 'LG', 'SW'];
+const LANGUAGE_STORAGE_KEY = 'selected_language';
 
 export function useSplashViewModel(): UseSplashViewModelReturn {
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>('EN');
 
-  const onSelectLanguage = useCallback((lang: LanguageCode) => {
+  // Load persisted language on mount
+  useEffect(() => {
+    const loadLanguage = async () => {
+      try {
+        const savedLang = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
+        if (savedLang && (savedLang === 'EN' || savedLang === 'LG' || savedLang === 'SW')) {
+          setSelectedLanguage(savedLang as LanguageCode);
+        }
+      } catch (error) {
+        console.error('Failed to load language preference:', error);
+      }
+    };
+    loadLanguage();
+  }, []);
+
+  const onSelectLanguage = useCallback(async (lang: LanguageCode) => {
     setSelectedLanguage(lang);
-    // TODO: persist selected language to storage / i18n context once
-    // localization is wired up (e.g. AsyncStorage + i18next changeLanguage).
+    try {
+      await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    } catch (error) {
+      console.error('Failed to save language preference:', error);
+    }
   }, []);
 
   const onGetStarted = useCallback(() => {
-    // TODO: replace with the real onboarding phone-entry route once the
-    // onboarding flow is finalized. Currently stubbed.
     router.push('/onboarding/phone');
   }, []);
 
   const onBrowseGuest = useCallback(() => {
-    // TODO: confirm this should land on the Discover tab for guest users,
-    // or if a lightweight guest-mode wrapper route is needed first.
-    router.push('/(tabs)/discover');
+    router.push('/discover');
   }, []);
 
   const onLogin = useCallback(() => {
-    // TODO: replace with the real auth route once the login screen exists;
-    // may need query params (e.g. redirect target) later.
     router.push('/login');
   }, []);
 

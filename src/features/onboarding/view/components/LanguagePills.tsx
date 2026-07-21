@@ -1,6 +1,6 @@
 // features/onboarding/view/components/LanguagePills.tsx
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 
 interface LanguagePillsProps<T extends string> {
   languages: T[];
@@ -17,16 +17,38 @@ export default function LanguagePills<T extends string>({
     <View style={styles.row}>
       {languages.map((lang) => {
         const isSelected = lang === selected;
+        const scaleValue = useRef(new Animated.Value(1)).current;
+
+        const onPressIn = () => {
+          Animated.spring(scaleValue, {
+            toValue: 0.92,
+            useNativeDriver: true,
+          }).start();
+        };
+
+        const onPressOut = () => {
+          Animated.spring(scaleValue, {
+            toValue: 1,
+            friction: 4,
+            tension: 40,
+            useNativeDriver: true,
+          }).start();
+        };
+
         return (
-          <Pressable
-            key={lang}
-            onPress={() => onSelect(lang)}
-            style={[styles.pill, isSelected ? styles.pillSelected : styles.pillUnselected]}
-          >
-            <Text style={[styles.pillText, isSelected ? styles.pillTextSelected : styles.pillTextUnselected]}>
-              {lang}
-            </Text>
-          </Pressable>
+          <Animated.View key={lang} style={{ transform: [{ scale: scaleValue }] }}>
+            <TouchableOpacity
+              onPress={() => onSelect(lang)}
+              onPressIn={onPressIn}
+              onPressOut={onPressOut}
+              style={[styles.pill, isSelected ? styles.pillSelected : styles.pillUnselected]}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.pillText, isSelected ? styles.pillTextSelected : styles.pillTextUnselected]}>
+                {lang}
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
         );
       })}
     </View>

@@ -1,7 +1,8 @@
 // features/profile/viewmodel/useProfileViewModel.ts
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { router } from 'expo-router';
 import { navigateTo } from '../../../services/navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface ProfileData {
   name: string;
@@ -18,10 +19,12 @@ const MOCK_PROFILE: ProfileData = {
   phone: '+256 742 258 343',
   email: 'ddickens@gmail.com',
   avatarEmoji: 'profile',
-  memberSince: 'January 2026',
-  totalOrders: 7,
-  deliveryAddresses: 2,
+  memberSince: 'January 2023',
+  totalOrders: 15,
+  deliveryAddresses: 10,
 };
+
+const USER_PROFILE_KEY = 'user_profile';
 
 export interface MenuItem {
   id: string;
@@ -38,10 +41,25 @@ export interface UseProfileViewModelReturn {
 }
 
 export function useProfileViewModel(): UseProfileViewModelReturn {
-  const [profile] = useState<ProfileData>(MOCK_PROFILE);
+  const [profile, setProfile] = useState<ProfileData>(MOCK_PROFILE);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const saved = await AsyncStorage.getItem(USER_PROFILE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setProfile((prev) => ({ ...prev, ...parsed }));
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    };
+    loadProfile();
+  }, []);
 
   const onLogout = useCallback(() => {
-    // TODO: clear auth tokens, reset state
+    AsyncStorage.removeItem(USER_PROFILE_KEY).catch(() => {});
     router.replace('/');
   }, []);
 
@@ -62,7 +80,7 @@ export function useProfileViewModel(): UseProfileViewModelReturn {
       id: 'payment',
       icon: 'card',
       label: 'Payment Methods',
-      onPress: () => {},
+      onPress: () => navigateTo('/payment-methods'),
     },
     {
       id: 'favorites',

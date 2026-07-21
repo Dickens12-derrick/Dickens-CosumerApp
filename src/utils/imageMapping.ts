@@ -59,18 +59,26 @@ export const productImageMap: { [key: string]: any } = {
   'Ripe Avocados': require('../../assets/images/avocado ready.jpg'),
   'Fresh Mango': require('../../assets/images/mango.jpg'),
   'Mango': require('../../assets/images/mango.jpg'),
+  'Fresh Mangoes': require('../../assets/images/mango.jpg'),
   'Yellow Banana': require('../../assets/images/banana.jpg'),
   'Fresh Bananas': require('../../assets/images/banana.jpg'),
   'Banana': require('../../assets/images/banana.jpg'),
   'sweet Bananas': require('../../assets/images/banana.jpg'),
   'Sweet Bananas': require('../../assets/images/banana.jpg'),
+  'Pineapple': require('../../assets/images/mango.jpg'),
+  'Watermelon': require('../../assets/images/mango.jpg'),
+  'Oranges': require('../../assets/images/mango.jpg'),
+  'Lemons': require('../../assets/images/mango.jpg'),
 
   // Vegetables
   'Organic Sukuma Wiki': require('../../assets/images/sukuma.jpg'),
-  'Fresh Cabbage': require('../../assets/images/cabbage1.jpg'),
   'Cabbage': require('../../assets/images/cabbage1.jpg'),
+  'Fresh Cabbage': require('../../assets/images/cabbage1.jpg'),
   'Fresh Matoke': require('../../assets/images/matooke.jpg'),
   'Organic Tomatoes': require('../../assets/images/tomato.jpg'),
+  'Broccoli': require('../../assets/images/broccoli.jpeg'),
+  'Sweet Corn': require('../../assets/images/corn.jpeg'),
+  'Green Beans': require('../../assets/images/beans2.jpg'),
 
   // Legumes & Grains
   'Organic Beans': require('../../assets/images/beans2.jpg'),
@@ -80,6 +88,13 @@ export const productImageMap: { [key: string]: any } = {
   'Black Beans': require('../../assets/images/beans2.jpg'),
   'Groundnuts (1kg)': require('../../assets/images/groundnuts.jpeg'),
   'Posho (Maize Flour)': require('../../assets/images/posho.jpeg'),
+  'Rice': require('../../assets/images/yellowmaize.jpg'),
+  'Sorghum Flour': require('../../assets/images/yellowmaize.jpg'),
+  'Millet Flour': require('../../assets/images/yellowmaize.jpg'),
+  'Cowpeas': require('../../assets/images/beans2.jpg'),
+  'Soybeans': require('../../assets/images/beans2.jpg'),
+  'Peas': require('../../assets/images/beans2.jpg'),
+  'Lentils': require('../../assets/images/beans2.jpg'),
 
   // Dairy & Eggs
   'Free-Range Eggs (tray)': require('../../assets/images/eggs1.jpg'),
@@ -88,13 +103,25 @@ export const productImageMap: { [key: string]: any } = {
   'Organic Eggs': require('../../assets/images/eggs1.jpg'),
   'Farm Fresh Eggs': require('../../assets/images/eggs1.jpg'),
   'Fresh Milk (1L)': require('../../assets/images/fresh milk.jpeg'),
+  'Cheese Block': require('../../assets/images/cheese.jpeg'),
+  'Yogurt': require('../../assets/images/fresh milk.jpeg'),
+  'Farm Fresh Butter': require('../../assets/images/cheese.jpeg'),
+  'Organic Eggs (6)': require('../../assets/images/eggs1.jpg'),
 
   // Fish & Meat
   'Fresh Tilapia': require('../../assets/images/tilapiafish.jpeg'),
   'Local Chicken': require('../../assets/images/localchicken.jpeg'),
+  'Beef (1kg)': require('../../assets/images/beef.jpeg'),
+  'Pork (1kg)': require('../../assets/images/beef.jpeg'),
+  'Mukene': require('../../assets/images/1 fish.jpg'),
+  'Grasshoppers (Nsenene)': require('../../assets/images/beans2.jpg'),
 
   // Herbs
   'Fresh Ginger': require('../../assets/images/fresh ginger.jpg'),
+  'Garlic': require('../../assets/images/cloves.jpeg'),
+  'Fresh Dill': require('../../assets/images/dill.jpeg'),
+  'Cloves': require('../../assets/images/cloves.jpeg'),
+  'Cinnamon Sticks': require('../../assets/images/cloves.jpeg'),
 
   // Fallbacks by category
   'fruits': require('../../assets/images/mango.jpg'),

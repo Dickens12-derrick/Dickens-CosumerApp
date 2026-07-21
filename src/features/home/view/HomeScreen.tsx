@@ -1,5 +1,5 @@
 // features/home/view/HomeScreen.tsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,13 @@ import { getCategoryIcon, getUiIcon } from '../../../utils/imageMapping';
 
 const { width } = Dimensions.get('window');
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 export default function HomeScreen() {
   const {
     featuredProducts,
@@ -30,6 +37,8 @@ export default function HomeScreen() {
     onProfilePress,
   } = useHomeViewModel();
 
+  const greeting = useMemo(() => getGreeting(), []);
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -43,7 +52,7 @@ export default function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good morning 👋</Text>
+          <Text style={styles.greeting}>{greeting} 👋</Text>
           <Text style={styles.headerTitle}>E-Katale</Text>
         </View>
         <View style={styles.headerActions}>

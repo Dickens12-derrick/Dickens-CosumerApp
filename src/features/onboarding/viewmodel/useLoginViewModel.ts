@@ -1,6 +1,7 @@
 // features/auth/viewmodel/useLoginViewModel.ts
 import { useState, useCallback, useMemo } from 'react';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface UseLoginViewModelReturn {
   phone: string;
@@ -22,6 +23,8 @@ function isValidPhone(value: string): boolean {
   const digitsOnly = value.replace(/\D/g, '');
   return digitsOnly.length >= 9;
 }
+
+const USER_PROFILE_KEY = 'user_profile';
 
 export function useLoginViewModel(): UseLoginViewModelReturn {
   const [phone, setPhone] = useState('');
@@ -62,14 +65,24 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
     setErrorMessage(null);
 
     try {
-      // TODO: replace with real auth API call (e.g. POST /auth/login).
-      // Simulated network delay for now:
+      // Simulate network delay
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      // TODO: store returned auth token (SecureStore) before navigating.
-      router.replace('/(tabs)/discover');
+      // Save profile data to AsyncStorage for preview in Profile screen
+      const profileData = {
+        name: 'Derrick Dickens',
+        phone: `+256 ${phone}`,
+        email: 'ddickens@gmail.com',
+        avatarEmoji: 'profile',
+        memberSince: 'January 2023',
+        totalOrders: 15,
+        deliveryAddresses: 10,
+      };
+      await AsyncStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profileData));
+
+      // Redirect to home after login (no tabs)
+      router.replace('/home');
     } catch (err) {
-      // TODO: surface real error messages from the API response.
       setErrorMessage('Login failed. Check your details and try again.');
     } finally {
       setIsSubmitting(false);
@@ -77,7 +90,6 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
   }, [phone, password]);
 
   const onForgotPassword = useCallback(() => {
-    // TODO: build a forgot-password flow (phone verification -> OTP -> reset).
     router.push('/forgot-password');
   }, []);
 

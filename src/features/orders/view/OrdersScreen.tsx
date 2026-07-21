@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   Image,
+  Dimensions,
 } from 'react-native';
 import { useOrdersViewModel, OrderStatus } from '../viewmodel/useOrdersViewModel';
 import { getProductImage, getUiIcon } from '../../../utils/imageMapping';
@@ -184,6 +185,8 @@ const styles = StyleSheet.create({
     borderColor: '#C8E6C9',
     backgroundColor: '#FFFFFF',
     marginRight: 8,
+    minWidth: 80,
+    alignItems: 'center',
   },
   filterChipActive: {
     backgroundColor: '#1B5E20',

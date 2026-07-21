@@ -80,11 +80,11 @@ export function useHomeViewModel(): UseHomeViewModelReturn {
   }, []);
 
   const onCategoryPress = useCallback((category: Category) => {
-    navigateTo('/(tabs)/discover', { category: category.id });
+    navigateTo('/discover', { category: category.id });
   }, []);
 
   const onViewAllFeatured = useCallback(() => {
-    navigateTo('/(tabs)/discover');
+    navigateTo('/discover');
   }, []);
 
   const onSearchPress = useCallback(() => {

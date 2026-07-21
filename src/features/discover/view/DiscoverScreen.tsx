@@ -15,6 +15,7 @@ import { getCategoryIcon } from '../../../utils/imageMapping';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
+const CHIP_WIDTH = (width - 20 * 2 - 8 * 6) / 7;
 
 export default function DiscoverScreen() {
   const {
@@ -93,7 +94,7 @@ export default function DiscoverScreen() {
               <ProductImage
                 name={product.name}
                 category={product.category}
-                height={100}
+                height={120}
                 width="100%"
                 borderRadius={0}
               />
@@ -156,27 +157,30 @@ const styles = StyleSheet.create({
   categoryChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 14,
+    paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1.5,
     borderColor: '#C8E6C9',
     backgroundColor: '#FFFFFF',
     marginRight: 8,
+    minWidth: 80,
+    justifyContent: 'center',
   },
   categoryChipActive: {
     backgroundColor: '#1B5E20',
     borderColor: '#1B5E20',
+    borderWidth: 1.5,
   },
   categoryIcon: {
     width: 18,
     height: 18,
-    borderRadius: 4,
+    borderRadius: 2,
+    marginRight: 6,
   },
   categoryName: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#1B1B1B',
   },
   categoryNameActive: {
@@ -201,6 +205,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 8,
     backgroundColor: '#F5F5F5',
+    minWidth: 60,
+    alignItems: 'center',
   },
   sortChipActive: {
     backgroundColor: '#E8F5E9',

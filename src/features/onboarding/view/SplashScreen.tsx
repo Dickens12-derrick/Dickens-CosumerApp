@@ -5,7 +5,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSplashViewModel } from '../viewmodel/useSplashViewModel';
 import LanguagePills from './components/LanguagePills';
 import { getUiIcon } from '../../../utils/imageMapping';
-
 const { width } = Dimensions.get('window');
 
 export default function SplashScreen() {
@@ -78,7 +77,7 @@ export default function SplashScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#FFFFFF',
   },
   // --- Top Gradient Section ---
