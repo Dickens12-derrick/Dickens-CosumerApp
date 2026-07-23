@@ -13,6 +13,7 @@ export interface UseOtpVerificationViewModelReturn {
   canVerify: boolean;
   secondsUntilResend: number;
   canResend: boolean;
+  smsStatus: string | null;
   onChangeDigit: (index: number, value: string) => void;
   onVerify: () => void;
   onResend: () => void;
@@ -25,6 +26,7 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
   const [isVerifying, setIsVerifying] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [secondsUntilResend, setSecondsUntilResend] = useState(RESEND_COOLDOWN_SECONDS);
+  const [smsStatus, setSmsStatus] = useState<string | null>(null);
 
   // Countdown timer for "Resend code in Ns"
   useEffect(() => {
@@ -34,6 +36,34 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
     }, 1000);
     return () => clearInterval(timer);
   }, [secondsUntilResend]);
+
+  // Simulate SMS auto-fill for development
+  useEffect(() => {
+    const hasTyped = digits.some((d) => d !== '');
+    if (hasTyped) {
+      setSmsStatus(null);
+      return;
+    }
+
+    setSmsStatus('Waiting for SMS...');
+
+    const timer = setTimeout(() => {
+      setDigits((currentDigits) => {
+        const hasTypedInMeantime = currentDigits.some((d) => d !== '');
+        if (hasTypedInMeantime) {
+          return currentDigits;
+        }
+        setSmsStatus('Auto-filling from SMS...');
+        setTimeout(() => {
+          setDigits(['2', '9', '4', '8', '1', '5']);
+          setSmsStatus('Code auto-filled from SMS');
+        }, 1200);
+        return currentDigits;
+      });
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const canVerify = useMemo(() => digits.every((d) => d.length === 1), [digits]);
   const canResend = secondsUntilResend === 0;
@@ -45,6 +75,7 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
       next[index] = singleDigit;
       return next;
     });
+    setSmsStatus(null); // Clear SMS status if user types manually
     if (errorMessage) setErrorMessage(null);
   }, [errorMessage]);
 
@@ -71,6 +102,7 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
     // TODO: replace with real API call to resend the SMS code.
     setDigits(Array(OTP_LENGTH).fill(''));
     setSecondsUntilResend(RESEND_COOLDOWN_SECONDS);
+    setSmsStatus('Waiting for SMS...');
   }, [canResend]);
 
   const onBack = useCallback(() => {
@@ -85,6 +117,7 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
     canVerify,
     secondsUntilResend,
     canResend,
+    smsStatus,
     onChangeDigit,
     onVerify,
     onResend,

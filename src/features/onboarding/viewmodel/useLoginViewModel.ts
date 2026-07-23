@@ -80,8 +80,8 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
       };
       await AsyncStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profileData));
 
-      // Redirect to home after login (no tabs)
-      router.replace('/home');
+      // Redirect to home after login (under tabs)
+      router.replace('/(tabs)/home');
     } catch (err) {
       setErrorMessage('Login failed. Check your details and try again.');
     } finally {

@@ -14,6 +14,7 @@ export default function OtpVerificationScreen() {
     canVerify,
     secondsUntilResend,
     canResend,
+    smsStatus,
     onChangeDigit,
     onVerify,
     onResend,
@@ -61,6 +62,10 @@ export default function OtpVerificationScreen() {
           />
         ))}
       </View>
+
+      {smsStatus && (
+        <Text style={styles.smsStatusText}>{smsStatus}</Text>
+      )}
 
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
@@ -113,6 +118,7 @@ const styles = StyleSheet.create({
   resendWrap: { marginTop: 18, alignItems: 'center' },
   resendText: { fontSize: 13, fontWeight: '600', color: '#1B5E20', textDecorationLine: 'underline' },
   resendTextDisabled: { color: '#9E9E9E', textDecorationLine: 'none' },
+  smsStatusText: { color: '#888888', fontSize: 13, textAlign: 'center', marginBottom: 16, fontStyle: 'italic' },
   progressRow: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 32 },
   progressDot: { width: 20, height: 4, borderRadius: 2, backgroundColor: '#E0E0E0' },
   progressDotActive: { backgroundColor: '#1B5E20' },

@@ -57,7 +57,7 @@ export function useSearchViewModel(): UseSearchViewModelReturn {
   }, []);
 
   const onResultPress = useCallback((product: SearchResult) => {
-    navigateTo('/product/[id]', { id: product.id });
+    navigateTo(`/product/${product.id}`);
   }, []);
 
   const onRecentSearchPress = useCallback((search: string) => {

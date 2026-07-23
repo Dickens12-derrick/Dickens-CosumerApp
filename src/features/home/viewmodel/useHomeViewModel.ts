@@ -76,7 +76,7 @@ export function useHomeViewModel(): UseHomeViewModelReturn {
   }, []);
 
   const onProductPress = useCallback((product: Product) => {
-    navigateTo('/product/[id]', { id: product.id });
+    navigateTo(`/product/${product.id}`);
   }, []);
 
   const onCategoryPress = useCallback((category: Category) => {

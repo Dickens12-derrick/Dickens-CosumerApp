@@ -12,10 +12,11 @@ import {
 import { useDiscoverViewModel } from '../viewmodel/useDiscoverViewModel';
 import { ProductImage } from '../../../components/ProductImage';
 import { getCategoryIcon } from '../../../utils/imageMapping';
+import { useTheme } from '../../../services/ThemeContext';
+import { useLanguage } from '../../../services/LanguageContext';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
-const CHIP_WIDTH = (width - 20 * 2 - 8 * 6) / 7;
 
 export default function DiscoverScreen() {
   const {
@@ -28,12 +29,24 @@ export default function DiscoverScreen() {
     onProductPress,
   } = useDiscoverViewModel();
 
+  const { theme, toggleTheme, colors } = useTheme();
+  const { t } = useLanguage();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Discover</Text>
-        <Text style={styles.headerSubtitle}>{products.length} products found</Text>
+      <View style={[styles.header, { backgroundColor: theme === 'dark' ? colors.cardBackground : colors.primary }]}>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.headerTitle}>{t('discoverTitle')}</Text>
+            <Text style={[styles.headerSubtitle, { color: theme === 'dark' ? colors.textSecondary : 'rgba(255,255,255,0.7)' }]}>
+              {t('discoverCount', { count: products.length })}
+            </Text>
+          </View>
+          <Pressable onPress={toggleTheme} style={styles.themeToggle} hitSlop={10}>
+            <Text style={styles.themeToggleText}>{theme === 'light' ? '🌙' : '☀️'}</Text>
+          </Pressable>
+        </View>
       </View>
 
       {/* Category filter chips */}
@@ -47,12 +60,23 @@ export default function DiscoverScreen() {
           return (
             <Pressable
               key={cat.id}
-              style={[styles.categoryChip, isActive && styles.categoryChipActive]}
+              style={[
+                styles.categoryChip,
+                {
+                  backgroundColor: isActive ? colors.primary : colors.cardBackground,
+                  borderColor: isActive ? colors.primary : colors.border,
+                },
+              ]}
               onPress={() => onCategorySelect(cat.id)}
             >
               <Image source={getCategoryIcon(cat.icon)} style={styles.categoryIcon} />
-              <Text style={[styles.categoryName, isActive && styles.categoryNameActive]}>
-                {cat.name}
+              <Text
+                style={[
+                  styles.categoryName,
+                  { color: isActive ? (theme === 'dark' ? '#1B1B1B' : '#FFFFFF') : colors.text },
+                ]}
+              >
+                {t(`cat_${cat.id}` as any)}
               </Text>
             </Pressable>
           );
@@ -61,17 +85,29 @@ export default function DiscoverScreen() {
 
       {/* Sort options */}
       <View style={styles.sortRow}>
-        <Text style={styles.sortLabel}>Sort by:</Text>
+        <Text style={[styles.sortLabel, { color: colors.textSecondary }]}>{t('discoverSortLabel')}</Text>
         {(['popular', 'price_low', 'price_high'] as const).map((option) => {
           const isActive = sortBy === option;
-          const label = option === 'popular' ? 'Popular' : option === 'price_low' ? 'Lowest Price' : 'Highest Price';
+          const label = option === 'popular' 
+            ? t('discoverSortPopular') 
+            : option === 'price_low' 
+              ? t('discoverSortLowPrice') 
+              : t('discoverSortHighPrice');
           return (
             <Pressable
               key={option}
-              style={[styles.sortChip, isActive && styles.sortChipActive]}
+              style={[
+                styles.sortChip,
+                { backgroundColor: isActive ? colors.primaryLight : (theme === 'dark' ? '#2C2C2C' : '#F5F5F5') },
+              ]}
               onPress={() => onSortChange(option)}
             >
-              <Text style={[styles.sortChipText, isActive && styles.sortChipTextActive]}>
+              <Text
+                style={[
+                  styles.sortChipText,
+                  { color: isActive ? colors.primary : colors.textSecondary },
+                ]}
+              >
                 {label}
               </Text>
             </Pressable>
@@ -87,10 +123,18 @@ export default function DiscoverScreen() {
         {products.map((product) => (
           <Pressable
             key={product.id}
-            style={styles.productCard}
+            style={[
+              styles.productCard,
+              { backgroundColor: colors.cardBackground, borderColor: colors.border },
+            ]}
             onPress={() => onProductPress(product)}
           >
-            <View style={styles.productImagePlaceholder}>
+            <View
+              style={[
+                styles.productImagePlaceholder,
+                { backgroundColor: theme === 'dark' ? '#252525' : '#F6FBF6' },
+              ]}
+            >
               <ProductImage
                 name={product.name}
                 category={product.category}
@@ -99,24 +143,32 @@ export default function DiscoverScreen() {
                 borderRadius={0}
               />
               {product.isOrganic && (
-                <View style={styles.organicBadge}>
-                  <Text style={styles.organicBadgeText}>Organic</Text>
+                <View style={[styles.organicBadge, { backgroundColor: colors.primary }]}>
+                  <Text style={[styles.organicBadgeText, { color: theme === 'dark' ? '#1B1B1B' : '#FFFFFF' }]}>
+                    {t('discoverOrganic')}
+                  </Text>
                 </View>
               )}
             </View>
             <View style={styles.productInfo}>
-              <Text style={styles.productName} numberOfLines={1}>{product.name}</Text>
-              <Text style={styles.productFarmer} numberOfLines={1}>{product.farmer}</Text>
+              <Text style={[styles.productName, { color: colors.text }]} numberOfLines={1}>
+                {product.name}
+              </Text>
+              <Text style={[styles.productFarmer, { color: colors.textSecondary }]} numberOfLines={1}>
+                {product.farmer}
+              </Text>
               <View style={styles.productBottom}>
-                <Text style={styles.productPrice}>
+                <Text style={[styles.productPrice, { color: colors.primary }]}>
                   UGX {product.price.toLocaleString()}
                 </Text>
-                <Text style={styles.productUnit}>/{product.unit}</Text>
+                <Text style={[styles.productUnit, { color: colors.textSecondary }]}>/{product.unit}</Text>
               </View>
               <View style={styles.ratingRow}>
                 <Text style={styles.starIcon}>⭐</Text>
-                <Text style={styles.ratingText}>{product.rating}</Text>
-                <Text style={styles.reviewCount}>({product.reviewCount})</Text>
+                <Text style={[styles.ratingText, { color: colors.text }]}>{product.rating}</Text>
+                <Text style={[styles.reviewCount, { color: colors.textSecondary }]}>
+                  ({product.reviewCount})
+                </Text>
               </View>
             </View>
           </Pressable>
@@ -129,14 +181,17 @@ export default function DiscoverScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   // --- Header ---
   header: {
     paddingHorizontal: 20,
     paddingTop: 56,
-    paddingBottom: 12,
-    backgroundColor: '#1B5E20',
+    paddingBottom: 16,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerTitle: {
     fontSize: 24,
@@ -145,8 +200,18 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.7)',
     marginTop: 4,
+  },
+  themeToggle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  themeToggleText: {
+    fontSize: 18,
   },
   // --- Categories ---
   categoryRow: {
@@ -161,16 +226,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1.5,
-    borderColor: '#C8E6C9',
-    backgroundColor: '#FFFFFF',
     marginRight: 8,
     minWidth: 80,
     justifyContent: 'center',
-  },
-  categoryChipActive: {
-    backgroundColor: '#1B5E20',
-    borderColor: '#1B5E20',
-    borderWidth: 1.5,
   },
   categoryIcon: {
     width: 18,
@@ -181,10 +239,6 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#1B1B1B',
-  },
-  categoryNameActive: {
-    color: '#FFFFFF',
   },
   // --- Sort ---
   sortRow: {
@@ -197,27 +251,18 @@ const styles = StyleSheet.create({
   sortLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#666666',
     marginRight: 4,
   },
   sortChip: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
-    backgroundColor: '#F5F5F5',
     minWidth: 60,
     alignItems: 'center',
-  },
-  sortChipActive: {
-    backgroundColor: '#E8F5E9',
   },
   sortChipText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#666666',
-  },
-  sortChipTextActive: {
-    color: '#1B5E20',
   },
   // --- Product Grid ---
   productGrid: {
@@ -229,23 +274,19 @@ const styles = StyleSheet.create({
   },
   productCard: {
     width: CARD_WIDTH,
-    backgroundColor: '#FFFFFF',
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#E8F5E9',
     overflow: 'hidden',
     marginBottom: 4,
   },
   productImagePlaceholder: {
     height: 100,
-    backgroundColor: '#F6FBF6',
     overflow: 'hidden',
   },
   organicBadge: {
     position: 'absolute',
     top: 6,
     left: 6,
-    backgroundColor: '#1B5E20',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
@@ -253,7 +294,6 @@ const styles = StyleSheet.create({
   organicBadgeText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFFFFF',
   },
   productInfo: {
     padding: 10,
@@ -261,11 +301,9 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#1B1B1B',
   },
   productFarmer: {
     fontSize: 11,
-    color: '#666666',
     marginTop: 2,
   },
   productBottom: {
@@ -277,11 +315,9 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1B5E20',
   },
   productUnit: {
     fontSize: 11,
-    color: '#666666',
   },
   ratingRow: {
     flexDirection: 'row',
@@ -295,10 +331,8 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#1B1B1B',
   },
   reviewCount: {
     fontSize: 10,
-    color: '#666666',
   },
 });

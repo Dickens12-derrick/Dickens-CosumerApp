@@ -46,7 +46,7 @@ export function usePreferencesViewModel(): UsePreferencesViewModelReturn {
     try {
       // TODO: persist selectedIds to backend/local store for the "For You" engine.
       await new Promise((resolve) => setTimeout(resolve, 500));
-      router.replace('/(tabs)/discover');
+      router.push('/onboarding/almost-done');
     } finally {
       setIsSubmitting(false);
     }

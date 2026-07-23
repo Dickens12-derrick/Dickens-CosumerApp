@@ -114,7 +114,7 @@ export function useDiscoverViewModel(): UseDiscoverViewModelReturn {
   }, []);
 
   const onProductPress = useCallback((product: Product) => {
-    navigateTo('/product/[id]', { id: product.id });
+    navigateTo(`/product/${product.id}`);
   }, []);
 
   const products = useMemo(() => {

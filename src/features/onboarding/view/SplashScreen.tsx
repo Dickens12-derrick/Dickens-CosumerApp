@@ -5,17 +5,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSplashViewModel } from '../viewmodel/useSplashViewModel';
 import LanguagePills from './components/LanguagePills';
 import { getUiIcon } from '../../../utils/imageMapping';
+import { useLanguage, LanguageCode } from '../../../services/LanguageContext';
+
 const { width } = Dimensions.get('window');
 
 export default function SplashScreen() {
+  const { language, setLanguage, t } = useLanguage();
   const {
-    selectedLanguage,
     languages,
     onSelectLanguage,
     onGetStarted,
     onBrowseGuest,
     onLogin,
   } = useSplashViewModel();
+
+  const handleSelectLanguage = (lang: LanguageCode) => {
+    onSelectLanguage(lang);
+    setLanguage(lang);
+  };
 
   return (
     <View style={styles.container}>
@@ -33,16 +40,24 @@ export default function SplashScreen() {
         <Text style={styles.appName}>E-Katale</Text>
 
         {/* Tagline */}
-        <Text style={styles.tagline}>Fresh, Farm-direct, Delivered</Text>
+        <Text style={styles.tagline}>{t('tagline')}</Text>
 
-        {/* Illustration: three overlapping circles on a shadow ellipse */}
+        {/* Illustration: three horizontal produce circles on a shadow ellipse */}
         <View style={styles.illustrationContainer}>
+          {/* Produce row */}
+          <View style={styles.produceRow}>
+            {/* Tomato (Red circle with stem) */}
+            <View style={styles.tomatoContainer}>
+              <View style={styles.stem} />
+              <View style={[styles.produceCircle, styles.produceRed]} />
+            </View>
+            {/* Orange */}
+            <View style={[styles.produceCircle, styles.produceOrange]} />
+            {/* Lime/Green */}
+            <View style={[styles.produceCircle, styles.produceGreen]} />
+          </View>
           {/* Shadow ellipse */}
           <View style={styles.shadowEllipse} />
-          {/* Overlapping produce circles */}
-          <View style={[styles.produceCircle, styles.produceRed]} />
-          <View style={[styles.produceCircle, styles.produceOrange, styles.produceOffset1]} />
-          <View style={[styles.produceCircle, styles.produceGreen, styles.produceOffset2]} />
         </View>
       </LinearGradient>
 
@@ -51,23 +66,23 @@ export default function SplashScreen() {
         {/* <View style={styles.panelCurve} /> */}
 
         <Pressable style={styles.primaryButton} onPress={onGetStarted}>
-          <Text style={styles.primaryButtonText}>Get Started</Text>
+          <Text style={styles.primaryButtonText}>{t('getStarted')}</Text>
         </Pressable>
 
         <Pressable style={styles.secondaryButton} onPress={onBrowseGuest}>
-          <Text style={styles.secondaryButtonText}>Browse as Guest</Text>
+          <Text style={styles.secondaryButtonText}>{t('browseGuest')}</Text>
         </Pressable>
 
         <Pressable style={styles.linkButton} onPress={onLogin}>
-          <Text style={styles.linkButtonText}>Already have an account? Log in</Text>
+          <Text style={styles.linkButtonText}>{t('loginText')}</Text>
         </Pressable>
 
         {/* Language pills at the very bottom */}
         <View style={styles.langRow}>
           <LanguagePills
             languages={languages}
-            selected={selectedLanguage}
-            onSelect={onSelectLanguage}
+            selected={language}
+            onSelect={handleSelectLanguage}
           />
         </View>
       </View>
@@ -125,45 +140,52 @@ const styles = StyleSheet.create({
   },
   // --- Illustration ---
   illustrationContainer: {
-    width: 160,
-    height: 100,
-    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 28,
+    width: 200,
+    height: 90,
   },
-  shadowEllipse: {
+  produceRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 12,
+    zIndex: 2,
+  },
+  tomatoContainer: {
+    position: 'relative',
+    alignItems: 'center',
+  },
+  stem: {
     position: 'absolute',
-    bottom: 0,
-    width: 100,
-    height: 14,
-    borderRadius: 50,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    top: -6,
+    width: 8,
+    height: 12,
+    backgroundColor: '#66BB6A',
+    borderRadius: 1,
+    zIndex: 3,
   },
   produceCircle: {
-    position: 'absolute',
     width: 48,
     height: 48,
     borderRadius: 24,
-    bottom: 10,
   },
   produceRed: {
-    backgroundColor: '#E53935',
-    left: width / 2 - 24 - 100,
+    backgroundColor: '#EC5B5B',
   },
   produceOrange: {
-    backgroundColor: '#FB8C00',
+    backgroundColor: '#FFA82E',
   },
   produceGreen: {
-    backgroundColor: '#43A047',
+    backgroundColor: '#9CD26A',
   },
-  produceOffset1: {
-    left: width / 2 - 24 - 100 + 28,
-    bottom: 24,
-  },
-  produceOffset2: {
-    left: width / 2 - 24 - 100 + 56,
-    bottom: 10,
+  shadowEllipse: {
+    marginTop: 6,
+    width: 150,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: 'rgba(0,0,0,0.12)',
+    zIndex: 1,
   },
   // --- Bottom White Panel ---
   panel: {

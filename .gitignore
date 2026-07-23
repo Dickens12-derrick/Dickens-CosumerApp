@@ -43,3 +43,9 @@ example
 /android
 
 /src/generated/prisma
+
+# IDEs and caches
+.idea/
+.expo-home/
+.npm-cache/
+.npmrc

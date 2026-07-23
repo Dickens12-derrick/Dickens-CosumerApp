@@ -23,7 +23,9 @@ export function useDeliveryAddressViewModel(): UseDeliveryAddressViewModelReturn
   const [selectedLabel, setSelectedLabel] = useState<AddressLabel>('Home');
   const [landmark, setLandmark] = useState('');
   const [isLocating, setIsLocating] = useState(false);
-  const [hasPickedLocation, setHasPickedLocation] = useState(false);
+  const [locationPickedState, setLocationPickedState] = useState(false);
+
+  const hasPickedLocation = landmark.trim().length > 0 || locationPickedState;
 
   const onSelectLabel = useCallback((label: AddressLabel) => {
     setSelectedLabel(label);
@@ -40,7 +42,7 @@ export function useDeliveryAddressViewModel(): UseDeliveryAddressViewModelReturn
       // const { status } = await Location.requestForegroundPermissionsAsync();
       // const position = await Location.getCurrentPositionAsync({});
       await new Promise((resolve) => setTimeout(resolve, 600));
-      setHasPickedLocation(true);
+      setLocationPickedState(true);
     } finally {
       setIsLocating(false);
     }
