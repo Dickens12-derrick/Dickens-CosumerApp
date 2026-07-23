@@ -40,7 +40,7 @@ export default function OtpVerificationScreen() {
   return (
     <View style={styles.container}>
       <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-        <Text style={styles.backText}>← Back</Text>
+        <Text style={styles.backText}>{'< Back'}</Text>
       </Pressable>
 
       <View style={styles.iconWrap}>

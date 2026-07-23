@@ -27,7 +27,7 @@ export default function OrderDetailScreen() {
       <View style={styles.loadingContainer}>
         <Text style={styles.notFoundText}>Order not found</Text>
         <Pressable onPress={onBack} style={styles.backLink}>
-          <Text style={styles.backLinkText}>← Go back</Text>
+          <Text style={styles.backLinkText}>{'< Go back'}</Text>
         </Pressable>
       </View>
     );
@@ -40,7 +40,7 @@ export default function OrderDetailScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>←</Text>
+          <Text style={styles.backText}>{'<'}</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Order Details</Text>
         <View style={styles.backButton} />

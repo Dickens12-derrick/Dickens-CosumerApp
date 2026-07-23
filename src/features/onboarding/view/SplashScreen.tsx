@@ -33,7 +33,7 @@ export default function SplashScreen() {
         <Text style={styles.appName}>E-Katale</Text>
 
         {/* Tagline */}
-        <Text style={styles.tagline}>Fresh, farm-direct, delivered</Text>
+        <Text style={styles.tagline}>Fresh, Farm-direct, Delivered</Text>
 
         {/* Illustration: three overlapping circles on a shadow ellipse */}
         <View style={styles.illustrationContainer}>

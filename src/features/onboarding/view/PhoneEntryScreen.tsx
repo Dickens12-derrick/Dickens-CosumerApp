@@ -33,7 +33,7 @@ export default function PhoneEntryScreen() {
     >
       <View style={styles.container}>
         <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>← Back</Text>
+          <Text style={styles.backText}>{'< Back'}</Text>
         </Pressable>
 
         <View style={styles.iconWrap}>
@@ -41,7 +41,7 @@ export default function PhoneEntryScreen() {
         </View>
 
         <Text style={styles.title}>Let's get you shopping</Text>
-        <Text style={styles.subtitle}>Just your number — that's it</Text>
+        <Text style={styles.subtitle}>Just your number</Text>
 
         <Text style={styles.label}>Phone Number</Text>
         <View style={styles.inputRow}>
@@ -75,7 +75,7 @@ export default function PhoneEntryScreen() {
           {isSubmitting ? (
             <ActivityIndicator color="#FFFFFF" />
           ) : (
-            <Text style={styles.submitButtonText}>Send Code →</Text>
+            <Text style={styles.submitButtonText}>{'Send Code >'}</Text>
           )}
         </Pressable>
 

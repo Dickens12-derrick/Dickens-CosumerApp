@@ -84,7 +84,7 @@ export default function DeliveryAddressScreen() {
           onPress={onSaveAddress}
           disabled={!hasPickedLocation}
         >
-          <Text style={styles.saveButtonText}>Save Address →</Text>
+          <Text style={styles.saveButtonText}>{'Save Address >'}</Text>
         </Pressable>
 
         {/* Skip link */}

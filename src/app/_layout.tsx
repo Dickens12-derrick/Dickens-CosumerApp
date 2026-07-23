@@ -1,11 +1,12 @@
 import { Stack } from "expo-router";
 import { CartProvider } from "../services/CartContext";
+import Home from "./home";
 
 export default function RootLayout() {
   return (
     <CartProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="index" options={{title: Home}}/>
         <Stack.Screen name="login" />
         <Stack.Screen name="forgot-password" />
         <Stack.Screen name="home" />

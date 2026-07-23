@@ -64,7 +64,7 @@ export default function ForgotPasswordScreen() {
     >
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>← Back</Text>
+          <Text style={styles.backText}> {'< Back'}</Text>
         </Pressable>
 
         {/* Step indicator */}

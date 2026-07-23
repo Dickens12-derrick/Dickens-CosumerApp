@@ -45,7 +45,7 @@ export default function OrdersScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>←</Text>
+          <Text style={styles.backText}>{'<'}</Text>
         </Pressable>
         <Text style={styles.headerTitle}>My Orders</Text>
         <View style={styles.backButton} />

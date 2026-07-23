@@ -36,7 +36,7 @@ export default function LoginScreen() {
     >
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>{'←'} Back</Text>
+          <Text style={styles.backText}>{'< Back'} </Text>
         </Pressable>
 
         <Text style={styles.title}>Welcome back</Text>

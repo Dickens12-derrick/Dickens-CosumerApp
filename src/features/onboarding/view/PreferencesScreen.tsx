@@ -12,7 +12,7 @@ export default function PreferencesScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.iconWrap}>
-        <Image source={getUiIcon('carrot')} style={styles.icon} />
+        <Image source={getUiIcon('product')} style={styles.icon} />
       </View>
 
       <Text style={styles.title}>What do you usually shop for?</Text>
@@ -39,7 +39,7 @@ export default function PreferencesScreen() {
         {isSubmitting ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.submitButtonText}>Continue →</Text>
+          <Text style={styles.submitButtonText}>{'Continue >'}</Text>
         )}
       </Pressable>
 
