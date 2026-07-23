@@ -31,8 +31,12 @@ export default function SearchScreen() {
     <View style={styles.container}>
       {/* Search header */}
       <View style={styles.header}>
-        <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>←</Text>
+        <Pressable
+          onPress={onBack}
+          hitSlop={10}
+          style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+        >
+          <Text style={styles.backText}>← Go back</Text>
         </Pressable>
         <View style={styles.searchInputContainer}>
           <Text style={styles.searchIcon}>🔍</Text>
@@ -132,15 +136,20 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   backButton: {
-    width: 36,
+    minWidth: 88,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 12,
+  },
+  backButtonPressed: {
+    opacity: 0.75,
+    transform: [{ scale: 0.97 }],
   },
   backText: {
-    fontSize: 18,
+    fontSize: 13,
     color: '#FFFFFF',
     fontWeight: '700',
   },

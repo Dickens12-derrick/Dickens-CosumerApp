@@ -13,6 +13,7 @@ const CATEGORIES: Category[] = [
   { id: 'fruits', label: 'Fruits', icon: '🍎' },
   { id: 'dairy_eggs', label: 'Dairy & Eggs', icon: '🥚' },
   { id: 'grains', label: 'Grains', icon: '🌾' },
+  { id: 'legumes', label: 'Legumes', icon: '🫘' },
   { id: 'fish_meat', label: 'Fish & Meat', icon: '🐟' },
   { id: 'herbs', label: 'Herbs & Spices', icon: '🌿' },
 ];
@@ -25,6 +26,7 @@ export interface UsePreferencesViewModelReturn {
   isSubmitting: boolean;
   canContinue: boolean;
   onToggleCategory: (id: string) => void;
+  onOpenCategory: (id: string) => void;
   onContinue: () => void;
 }
 
@@ -36,6 +38,11 @@ export function usePreferencesViewModel(): UsePreferencesViewModelReturn {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((existingId) => existingId !== id) : [...prev, id]
     );
+  }, []);
+
+  const onOpenCategory = useCallback((id: string) => {
+    setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    router.push(`/discover?category=${id}`);
   }, []);
 
   const canContinue = selectedIds.length > 0;
@@ -58,6 +65,7 @@ export function usePreferencesViewModel(): UsePreferencesViewModelReturn {
     isSubmitting,
     canContinue,
     onToggleCategory,
+    onOpenCategory,
     onContinue,
   };
 }

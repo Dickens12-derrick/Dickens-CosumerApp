@@ -36,6 +36,7 @@ export default function OrdersScreen() {
     onFilterChange,
     onOrderPress,
     onBack,
+    onForward,
     getStatusLabel,
     getStatusIcon,
   } = useOrdersViewModel();
@@ -44,11 +45,21 @@ export default function OrdersScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>{'<'}</Text>
+        <Pressable
+          onPress={onBack}
+          hitSlop={10}
+          style={({ pressed }) => [styles.navButton, pressed && styles.navButtonPressed]}
+        >
+          <Text style={styles.navText}>‹ Go back</Text>
         </Pressable>
         <Text style={styles.headerTitle}>My Orders</Text>
-        <View style={styles.backButton} />
+        <Pressable
+          onPress={onForward}
+          hitSlop={10}
+          style={({ pressed }) => [styles.navButton, pressed && styles.navButtonPressed]}
+        >
+          <Text style={styles.navText}>Forward ›</Text>
+        </Pressable>
       </View>
 
       {/* Filter chips */}
@@ -62,7 +73,11 @@ export default function OrdersScreen() {
           return (
             <Pressable
               key={filter.key}
-              style={[styles.filterChip, isActive && styles.filterChipActive]}
+              style={({ pressed }) => [
+                styles.filterChip,
+                isActive ? styles.filterChipActive : styles.filterChipInactive,
+                pressed && styles.chipPressed,
+              ]}
               onPress={() => onFilterChange(filter.key)}
             >
               <Text style={[styles.filterText, isActive && styles.filterTextActive]}>
@@ -93,7 +108,7 @@ export default function OrdersScreen() {
           orders.map((order) => (
             <Pressable
               key={order.id}
-              style={styles.orderCard}
+              style={({ pressed }) => [styles.orderCard, pressed && styles.cardPressed]}
               onPress={() => onOrderPress(order)}
             >
               <View style={styles.orderHeader}>
@@ -153,16 +168,21 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: '#1B5E20',
   },
-  backButton: {
-    width: 36,
+  navButton: {
+    minWidth: 86,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 10,
   },
-  backText: {
-    fontSize: 18,
+  navButtonPressed: {
+    opacity: 0.75,
+    transform: [{ scale: 0.97 }],
+  },
+  navText: {
+    fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '700',
   },
@@ -182,15 +202,21 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1.5,
-    borderColor: '#C8E6C9',
-    backgroundColor: '#FFFFFF',
     marginRight: 8,
     minWidth: 80,
     alignItems: 'center',
   },
+  filterChipInactive: {
+    borderColor: '#C8E6C9',
+    backgroundColor: 'transparent',
+  },
   filterChipActive: {
     backgroundColor: '#1B5E20',
     borderColor: '#1B5E20',
+  },
+  chipPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.97 }],
   },
   filterText: {
     fontSize: 13,
@@ -238,6 +264,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E8F5E9',
     overflow: 'hidden',
+  },
+  cardPressed: {
+    opacity: 0.86,
+    transform: [{ scale: 0.98 }],
   },
   orderHeader: {
     padding: 14,

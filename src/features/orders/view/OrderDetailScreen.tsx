@@ -39,11 +39,15 @@ export default function OrderDetailScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>{'<'}</Text>
+        <Pressable
+          onPress={onBack}
+          hitSlop={10}
+          style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+        >
+          <Text style={styles.backText}>‹ Go back</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Order Details</Text>
-        <View style={styles.backButton} />
+        <View style={styles.headerSpacer} />
       </View>
 
       <ScrollView
@@ -205,17 +209,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B5E20',
   },
   backButton: {
-    width: 36,
+    minWidth: 88,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  backButtonPressed: {
+    opacity: 0.75,
+    transform: [{ scale: 0.97 }],
   },
   backText: {
-    fontSize: 18,
+    fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '700',
+  },
+  headerSpacer: {
+    minWidth: 88,
+    height: 36,
   },
   headerTitle: {
     fontSize: 18,

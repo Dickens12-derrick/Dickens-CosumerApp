@@ -20,8 +20,8 @@ export interface ProductDetail {
   images: string[];
 }
 
-// Mock product data (TODO: replace with API call)
-const MOCK_PRODUCTS: Record<string, ProductDetail> = {
+// Mock product data (TOD replace with API call)
+export const MOCK_PRODUCTS: Record<string, ProductDetail> = {
   p1: {
     id: 'p1',
     name: 'Organic Sukuma Wiki',
@@ -280,18 +280,18 @@ const MOCK_PRODUCTS: Record<string, ProductDetail> = {
   },
   p17: {
     id: 'p17',
-    name: 'Fresh Mangoes',
-    farmer: 'Mama Mboga Farm',
+    name: 'Sweet Bananas',
+    farmer: 'Kayunga Organics',
     farmerRating: 4.7,
-    price: 3500,
-    unit: 'kg',
-    description: 'Sweet, juicy mangoes from eastern Uganda. Tree-ripened for maximum sweetness.',
+    price: 2000,
+    unit: 'bunch',
+    description: 'Sweet, ripe bananas freshly harvested from the Kayunga organic farm. Naturally ripened for the perfect sweetness.',
     category: 'fruits',
-    rating: 4.7,
-    reviewCount: 33,
+    rating: 4.5,
+    reviewCount: 19,
     isOrganic: false,
     inStock: true,
-    stockAmount: '25 kg available',
+    stockAmount: '10 bunches available',
     images: [],
   },
   p18: {
@@ -698,12 +698,19 @@ const MOCK_PRODUCTS: Record<string, ProductDetail> = {
 
 export interface UseProductDetailViewModelReturn {
   product: ProductDetail | null;
+  relatedProducts: ProductDetail[];
   quantity: number;
   isLoading: boolean;
   onIncreaseQuantity: () => void;
   onDecreaseQuantity: () => void;
   onAddToCart: () => void;
+  onRelatedProductPress: (product: ProductDetail) => void;
+  onViewCategory: () => void;
   onBack: () => void;
+}
+
+export function getAllProducts(): ProductDetail[] {
+  return Object.values(MOCK_PRODUCTS);
 }
 
 export function useProductDetailViewModel(): UseProductDetailViewModelReturn {
@@ -715,6 +722,13 @@ export function useProductDetailViewModel(): UseProductDetailViewModelReturn {
     if (!id) return null;
     return MOCK_PRODUCTS[id] ?? null;
   }, [id]);
+
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return getAllProducts()
+      .filter((item) => item.category === product.category && item.id !== product.id)
+      .slice(0, 6);
+  }, [product]);
 
   const onIncreaseQuantity = useCallback(() => {
     setQuantity((prev) => Math.min(prev + 1, 20));
@@ -740,17 +754,29 @@ export function useProductDetailViewModel(): UseProductDetailViewModelReturn {
     router.back();
   }, [product, quantity, addItem]);
 
+  const onRelatedProductPress = useCallback((relatedProduct: ProductDetail) => {
+    router.push(`/product/${relatedProduct.id}`);
+  }, []);
+
+  const onViewCategory = useCallback(() => {
+    if (!product) return;
+    router.push(`/discover?category=${product.category}`);
+  }, [product]);
+
   const onBack = useCallback(() => {
     router.back();
   }, []);
 
   return {
     product,
+    relatedProducts,
     quantity,
     isLoading,
     onIncreaseQuantity,
     onDecreaseQuantity,
     onAddToCart,
+    onRelatedProductPress,
+    onViewCategory,
     onBack,
   };
 }

@@ -1,6 +1,7 @@
 // features/onboarding/viewmodel/useOtpVerificationViewModel.ts
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
+import { saveAccountProfile } from '../../../services/account';
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 24;
@@ -89,6 +90,11 @@ export function useOtpVerificationViewModel(): UseOtpVerificationViewModelReturn
     try {
       // TODO: replace with real API call verifying digits.join('') against backend.
       await new Promise((resolve) => setTimeout(resolve, 700));
+      await saveAccountProfile({
+        name: 'New customer',
+        email: '',
+        phone: phone ?? '',
+      });
       router.push('/onboarding/address');
     } catch (err) {
       setErrorMessage('Invalid code. Please try again.');

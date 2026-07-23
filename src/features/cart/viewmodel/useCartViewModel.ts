@@ -50,7 +50,7 @@ export function useCartViewModel(): UseCartViewModelReturn {
   }, []);
 
   const onContinueShopping = useCallback(() => {
-    router.push('/discover');
+    router.push('/product/p1');
   }, []);
 
   return {

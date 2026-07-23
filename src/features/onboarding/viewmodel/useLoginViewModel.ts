@@ -1,15 +1,19 @@
 // features/auth/viewmodel/useLoginViewModel.ts
 import { useState, useCallback, useMemo } from 'react';
 import { router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { saveAccountProfile } from '../../../services/account';
 
 export interface UseLoginViewModelReturn {
+  name: string;
+  email: string;
   phone: string;
   password: string;
   isSecureEntry: boolean;
   isSubmitting: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
+  onChangeName: (value: string) => void;
+  onChangeEmail: (value: string) => void;
   onChangePhone: (value: string) => void;
   onChangePassword: (value: string) => void;
   onToggleSecureEntry: () => void;
@@ -24,14 +28,28 @@ function isValidPhone(value: string): boolean {
   return digitsOnly.length >= 9;
 }
 
-const USER_PROFILE_KEY = 'user_profile';
+function isValidEmail(value: string): boolean {
+  return /^\S+@\S+\.\S+$/.test(value.trim());
+}
 
 export function useLoginViewModel(): UseLoginViewModelReturn {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const onChangeName = useCallback((value: string) => {
+    setName(value);
+    if (errorMessage) setErrorMessage(null);
+  }, [errorMessage]);
+
+  const onChangeEmail = useCallback((value: string) => {
+    setEmail(value);
+    if (errorMessage) setErrorMessage(null);
+  }, [errorMessage]);
 
   const onChangePhone = useCallback((value: string) => {
     setPhone(value);
@@ -48,10 +66,18 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
   }, []);
 
   const canSubmit = useMemo(() => {
-    return isValidPhone(phone) && password.length >= 6 && !isSubmitting;
-  }, [phone, password, isSubmitting]);
+    return name.trim().length >= 2 && isValidEmail(email) && isValidPhone(phone) && password.length >= 6 && !isSubmitting;
+  }, [name, email, phone, password, isSubmitting]);
 
   const onSubmit = useCallback(async () => {
+    if (name.trim().length < 2) {
+      setErrorMessage('Enter your name.');
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setErrorMessage('Enter a valid email address.');
+      return;
+    }
     if (!isValidPhone(phone)) {
       setErrorMessage('Enter a valid phone number.');
       return;
@@ -68,17 +94,11 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
       // Simulate network delay
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      // Save profile data to AsyncStorage for preview in Profile screen
-      const profileData = {
-        name: 'Derrick Dickens',
-        phone: `+256 ${phone}`,
-        email: 'ddickens@gmail.com',
-        avatarEmoji: 'profile',
-        memberSince: 'January 2023',
-        totalOrders: 15,
-        deliveryAddresses: 10,
-      };
-      await AsyncStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profileData));
+      await saveAccountProfile({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone.trim(),
+      });
 
       // Redirect to home after login (under tabs)
       router.replace('/(tabs)/home');
@@ -87,7 +107,7 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
     } finally {
       setIsSubmitting(false);
     }
-  }, [phone, password]);
+  }, [name, email, phone, password]);
 
   const onForgotPassword = useCallback(() => {
     router.push('/forgot-password');
@@ -98,12 +118,16 @@ export function useLoginViewModel(): UseLoginViewModelReturn {
   }, []);
 
   return {
+    name,
+    email,
     phone,
     password,
     isSecureEntry,
     isSubmitting,
     errorMessage,
     canSubmit,
+    onChangeName,
+    onChangeEmail,
     onChangePhone,
     onChangePassword,
     onToggleSecureEntry,

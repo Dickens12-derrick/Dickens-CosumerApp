@@ -6,7 +6,7 @@ import CategoryChip from './components/CategoryChip';
 import { getUiIcon } from '../../../utils/imageMapping';
 
 export default function PreferencesScreen() {
-  const { categories, selectedIds, isSubmitting, canContinue, onToggleCategory, onContinue } =
+  const { categories, selectedIds, isSubmitting, canContinue, onOpenCategory, onContinue } =
     usePreferencesViewModel();
 
   return (
@@ -24,7 +24,7 @@ export default function PreferencesScreen() {
             key={category.id}
             category={category}
             isSelected={selectedIds.includes(category.id)}
-            onToggle={onToggleCategory}
+            onToggle={onOpenCategory}
           />
         ))}
       </View>

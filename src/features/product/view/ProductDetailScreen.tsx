@@ -10,15 +10,18 @@ import {
   Image,
 } from 'react-native';
 import { useProductDetailViewModel } from '../viewmodel/useProductDetailViewModel';
-import { getProductImage, getCategoryIcon } from '../../../utils/imageMapping';
+import { getProductImage } from '../../../utils/imageMapping';
 export default function ProductDetailScreen() {
   const {
     product,
+    relatedProducts,
     quantity,
     isLoading,
     onIncreaseQuantity,
     onDecreaseQuantity,
     onAddToCart,
+    onRelatedProductPress,
+    onViewCategory,
     onBack,
   } = useProductDetailViewModel();
 
@@ -47,8 +50,12 @@ export default function ProductDetailScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Back button */}
-        <Pressable onPress={onBack} hitSlop={10} style={styles.backButton}>
-          <Text style={styles.backText}>← Back</Text>
+        <Pressable
+          onPress={onBack}
+          hitSlop={10}
+          style={({ pressed }) => [styles.backButton, pressed && styles.navButtonPressed]}
+        >
+          <Text style={styles.backText}>← Go back</Text>
         </Pressable>
 
         {/* Image placeholder */}
@@ -100,7 +107,49 @@ export default function ProductDetailScreen() {
           {/* Description */}
           <Text style={styles.descriptionLabel}>Description</Text>
           <Text style={styles.description}>{product.description}</Text>
+          <Pressable
+            style={({ pressed }) => [styles.categoryButton, pressed && styles.cardPressed]}
+            onPress={onViewCategory}
+          >
+            <Text style={styles.categoryButtonText}>Shop more in this category</Text>
+          </Pressable>
         </View>
+
+        {relatedProducts.length > 0 && (
+          <View style={styles.relatedSection}>
+            <Text style={styles.relatedTitle}>Related products</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.relatedRow}
+            >
+              {relatedProducts.map((relatedProduct) => (
+                <Pressable
+                  key={relatedProduct.id}
+                  style={({ pressed }) => [styles.relatedCard, pressed && styles.cardPressed]}
+                  onPress={() => onRelatedProductPress(relatedProduct)}
+                >
+                  <Image
+                    source={getProductImage(relatedProduct.name, relatedProduct.category)}
+                    style={styles.relatedImage}
+                    resizeMode="cover"
+                  />
+                  <View style={styles.relatedInfo}>
+                    <Text style={styles.relatedName} numberOfLines={1}>
+                      {relatedProduct.name}
+                    </Text>
+                    <Text style={styles.relatedDescription} numberOfLines={2}>
+                      {relatedProduct.description}
+                    </Text>
+                    <Text style={styles.relatedPrice}>
+                      UGX {relatedProduct.price.toLocaleString()}/{relatedProduct.unit}
+                    </Text>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
       </ScrollView>
 
       {/* Bottom bar with quantity + add to cart */}
@@ -170,6 +219,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 56,
     paddingBottom: 12,
+  },
+  navButtonPressed: {
+    opacity: 0.7,
+    transform: [{ scale: 0.98 }],
   },
   backText: {
     fontSize: 14,
@@ -299,6 +352,72 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#444444',
     lineHeight: 22,
+  },
+  categoryButton: {
+    alignSelf: 'flex-start',
+    marginTop: 16,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: '#1B5E20',
+    paddingHorizontal: 16,
+    paddingVertical: 9,
+  },
+  categoryButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1B5E20',
+  },
+  relatedSection: {
+    marginTop: 24,
+    paddingLeft: 20,
+  },
+  relatedTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1B1B1B',
+    marginBottom: 12,
+  },
+  relatedRow: {
+    gap: 12,
+    paddingRight: 20,
+  },
+  relatedCard: {
+    width: 170,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E8F5E9',
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden',
+  },
+  cardPressed: {
+    opacity: 0.82,
+    transform: [{ scale: 0.98 }],
+  },
+  relatedImage: {
+    width: '100%',
+    height: 96,
+    backgroundColor: '#F6FBF6',
+  },
+  relatedInfo: {
+    padding: 10,
+  },
+  relatedName: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1B1B1B',
+  },
+  relatedDescription: {
+    fontSize: 11,
+    color: '#666666',
+    lineHeight: 16,
+    marginTop: 3,
+    minHeight: 32,
+  },
+  relatedPrice: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#1B5E20',
+    marginTop: 6,
   },
   // --- Bottom Bar ---
   bottomBar: {

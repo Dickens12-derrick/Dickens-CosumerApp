@@ -1,6 +1,7 @@
 // features/home/viewmodel/useHomeViewModel.ts
 import { useState, useCallback, useEffect } from 'react';
 import { navigateTo } from '../../../services/navigation';
+import { getAllProducts } from '../../product/viewmodel/useProductDetailViewModel';
 
 // --- Shared types (will move to a shared types file later) ---
 export interface Product {
@@ -32,18 +33,16 @@ export interface Banner {
 
 // --- Static/mock data (TODO: replace with API calls) ---
 
-const FEATURED_PRODUCTS: Product[] = [
-  { id: 'p1', name: 'Organic Sukuma Wiki', farmer: 'Mama Mboga Farm', price: 2500, unit: 'bunch', imageUrl: 'sukuma.jpg', category: 'vegetables', rating: 4.8, reviewCount: 42, isOrganic: true },
-  { id: 'p2', name: 'Fresh Matoke', farmer: 'Kampala Greens', price: 5000, unit: 'kg', imageUrl: 'matooke.jpg', category: 'vegetables', rating: 4.6, reviewCount: 28, isOrganic: false },
-  { id: 'p3', name: 'Ripe Avocados', farmer: 'Kayunga Organics', price: 3000, unit: 'each', imageUrl: 'avocado ready.jpg', category: 'fruits', rating: 4.9, reviewCount: 56, isOrganic: true },
-  { id: 'p4', name: 'Free-Range Eggs (tray)', farmer: 'Mukono Poultry', price: 8000, unit: 'tray', imageUrl: 'eggs1.jpg', category: 'dairy_eggs', rating: 4.7, reviewCount: 35, isOrganic: true },
-];
+const FEATURED_PRODUCTS: Product[] = getAllProducts()
+  .slice(0, 8)
+  .map((product) => ({ ...product, imageUrl: '' }));
 
 const CATEGORIES: Category[] = [
   { id: 'vegetables', name: 'Vegetables', icon: 'vegetables' },
   { id: 'fruits', name: 'Fruits', icon: 'fruits' },
   { id: 'dairy_eggs', name: 'Dairy & Eggs', icon: 'dairy_eggs' },
   { id: 'grains', name: 'Grains & Cereals', icon: 'grains' },
+  { id: 'legumes', name: 'Legumes', icon: 'legumes' },
   { id: 'fish_meat', name: 'Fish & Meat', icon: 'fish_meat' },
   { id: 'herbs', name: 'Herbs & Spices', icon: 'herbs' },
 ];

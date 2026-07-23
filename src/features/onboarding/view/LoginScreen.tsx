@@ -15,12 +15,16 @@ import AuthTextField from './components/AuthTextField';
 
 export default function LoginScreen() {
   const {
+    name,
+    email,
     phone,
     password,
     isSecureEntry,
     isSubmitting,
     errorMessage,
     canSubmit,
+    onChangeName,
+    onChangeEmail,
     onChangePhone,
     onChangePassword,
     onToggleSecureEntry,
@@ -40,11 +44,26 @@ export default function LoginScreen() {
         </Pressable>
 
         <Text style={styles.title}>Welcome back</Text>
-        <Text style={styles.subtitle}>Log in to continue shopping fresh produce</Text>
+        <Text style={styles.subtitle}>Enter your details to continue shopping fresh produce</Text>
 
         <View style={styles.form}>
           <AuthTextField
-            label="Phone number"
+            label="Full name"
+            value={name}
+            placeholder="e.g. Jane Nambassa"
+            onChangeText={onChangeName}
+          />
+
+          <AuthTextField
+            label="Email address"
+            value={email}
+            placeholder="e.g. jane@example.com"
+            onChangeText={onChangeEmail}
+            keyboardType="email-address"
+          />
+
+          <AuthTextField
+            label="Contact number"
             value={phone}
             placeholder="e.g. 0700 123 456"
             onChangeText={onChangePhone}

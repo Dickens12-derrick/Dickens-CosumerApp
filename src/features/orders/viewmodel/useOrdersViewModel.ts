@@ -95,6 +95,7 @@ export interface UseOrdersViewModelReturn {
   onFilterChange: (filter: OrderStatus | 'all') => void;
   onOrderPress: (order: Order) => void;
   onBack: () => void;
+  onForward: () => void;
   getStatusLabel: (status: OrderStatus) => string;
   getStatusIcon: (status: OrderStatus) => string;
 }
@@ -114,6 +115,13 @@ export function useOrdersViewModel(): UseOrdersViewModelReturn {
     router.back();
   }, []);
 
+  const onForward = useCallback(() => {
+    const nextOrder = MOCK_ORDERS[0];
+    if (nextOrder) {
+      navigateTo(`/orders/${nextOrder.id}`);
+    }
+  }, []);
+
   const getStatusLabel = useCallback((status: OrderStatus) => STATUS_LABELS[status], []);
   const getStatusIcon = useCallback((status: OrderStatus) => STATUS_ICONS[status], []);
 
@@ -127,6 +135,7 @@ export function useOrdersViewModel(): UseOrdersViewModelReturn {
     onFilterChange,
     onOrderPress,
     onBack,
+    onForward,
     getStatusLabel,
     getStatusIcon,
   };

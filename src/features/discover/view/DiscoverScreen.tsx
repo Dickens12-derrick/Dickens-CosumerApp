@@ -75,6 +75,7 @@ export default function DiscoverScreen() {
                   styles.categoryName,
                   { color: isActive ? (theme === 'dark' ? '#1B1B1B' : '#FFFFFF') : colors.text },
                 ]}
+                numberOfLines={1}
               >
                 {t(`cat_${cat.id}` as any)}
               </Text>
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1.5,
     marginRight: 8,
-    minWidth: 80,
+    width: 136,
     justifyContent: 'center',
   },
   categoryIcon: {
@@ -239,6 +240,8 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: 13,
     fontWeight: '700',
+    flexShrink: 1,
+    textAlign: 'center',
   },
   // --- Sort ---
   sortRow: {
